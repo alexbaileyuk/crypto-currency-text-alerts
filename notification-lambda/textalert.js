@@ -1,9 +1,9 @@
 //////////////////////////////////////
 //      Global variable Set Up
 //////////////////////////////////////
+const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
-const axios = require('axios');
 
 const coinMarketApiKey = process.env.COINMARKET_API_KEY;
 const twilioNumber = process.env.TWILIOPHONENUMBER;
@@ -51,17 +51,20 @@ exports.lambdaHandler = async (event, context) => {
 //////////////////////////////////////
 function sendTextMessage() {
     let msg = [];
+
     coinsToSend.forEach(el => {
         msg.push(`${el.cmc_rank} ${el.symbol} $${el.quote.USD.price.toFixed(2)} ${el.quote.USD.percent_change_24h.toFixed(2)}%`);
     })
-    let regex = new RegExp(",", "g");
+
+    const regex = new RegExp(",", "g");
+
     client.messages
         .create({
             body: msg.toString().replace(regex, "\n"),
             from: twilioNumber,
             to: phoneNumber
         })
-        .then(message => {return message});
+        .then(message => { return message });
 }
 
 //////////////////////////////////////
@@ -73,5 +76,6 @@ function getCurrenciesIWant(coins) {
             if(el2.toLowerCase() == el.symbol.toLowerCase()) coinsToSend.push(el);
         })
     })
+
     sendTextMessage();
 }

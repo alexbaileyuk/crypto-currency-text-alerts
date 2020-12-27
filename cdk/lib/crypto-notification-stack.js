@@ -18,11 +18,11 @@ class CryptoNotificationStack extends cdk.Stack {
       code: lambda.Code.fromAsset('../notification-lambda'),
       handler: 'textalert.lambdaHandler',
       environment: {
-        COINMARKET_API_KEY: '',
-        TWILIOPHONENUMBER: '',
-        PHONENUMBER: '',
-        ACCOUNTSID: '',
-        AUTHTOKEN: ''
+        COINMARKET_API_KEY: process.env.COINMARKET_API_KEY,
+        TWILIOPHONENUMBER: process.env.TWILIOPHONENUMBER,
+        PHONENUMBER: process.env.PHONENUMBER,
+        ACCOUNTSID: process.env.ACCOUNTSID,
+        AUTHTOKEN: process.env.AUTHTOKEN
       },
       timeout: cdk.Duration.seconds(60),
       memorySize: 512,
